@@ -11,10 +11,45 @@ class App extends React.Component {
     this.state = {
       listInput: '',
       keyInput: '',
-      searchType: 'linear'
+      searchType: 'linear',
+      results: []
     }
   }
 
+  // search functions
+  stringToList = (str) => {
+    let list = str.split(',');
+    let listTrimmed = [];
+    list.forEach(item => {
+        listTrimmed.push(item.trim());
+    });
+
+    return listTrimmed;
+  }
+
+  linearSearch = (listStr, keyStr) => {
+    let list = this.stringToList(listStr);
+    let i = 0;
+    let key = parseInt(keyStr);
+    let results = []
+
+    for(i = 0; i < list.length; i++) {
+      let n = parseInt(list[i]);
+      
+      if (n === key) {
+        results = [...results, `Round ${i+1} ===> ${key} = ${n} found!!`]
+        break;
+      } else {
+        results = [...results, `Round ${i+1} ===> ${key} != ${n}`]
+      }
+    }
+
+    this.setState({
+      results: results
+    });
+  }
+
+  // handle functions
   handleSelectChange = (value) => {
     this.setState({
       searchType: value
@@ -29,6 +64,13 @@ class App extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    this.linearSearch(this.state.listInput,this.state.keyInput);
+  }
+
+  renderResults = (resultStr) => {
+    return (
+      <p>{resultStr}</p>
+    );
   }
 
   render() {
@@ -57,6 +99,7 @@ class App extends React.Component {
               </Select>
             </span>
           </form>
+          {this.state.results.map(this.renderResults)}
         </div>
       </div>
     );
