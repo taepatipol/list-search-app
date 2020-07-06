@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/list-search-app/static/css/main.553f9731.chunk.css",
+    "main.js": "/list-search-app/static/js/main.908944e6.chunk.js",
+    "main.js.map": "/list-search-app/static/js/main.908944e6.chunk.js.map",
+    "runtime-main.js": "/list-search-app/static/js/runtime-main.27628574.js",
+    "runtime-main.js.map": "/list-search-app/static/js/runtime-main.27628574.js.map",
+    "static/css/2.c27a359e.chunk.css": "/list-search-app/static/css/2.c27a359e.chunk.css",
+    "static/js/2.330e918d.chunk.js": "/list-search-app/static/js/2.330e918d.chunk.js",
+    "static/js/2.330e918d.chunk.js.map": "/list-search-app/static/js/2.330e918d.chunk.js.map",
+    "index.html": "/list-search-app/index.html",
+    "precache-manifest.ffa5b487985bcf26e998dbb1da6d35a5.js": "/list-search-app/precache-manifest.ffa5b487985bcf26e998dbb1da6d35a5.js",
+    "service-worker.js": "/list-search-app/service-worker.js",
+    "static/css/2.c27a359e.chunk.css.map": "/list-search-app/static/css/2.c27a359e.chunk.css.map",
+    "static/css/main.553f9731.chunk.css.map": "/list-search-app/static/css/main.553f9731.chunk.css.map",
+    "static/js/2.330e918d.chunk.js.LICENSE.txt": "/list-search-app/static/js/2.330e918d.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.27628574.js",
+    "static/css/2.c27a359e.chunk.css",
+    "static/js/2.330e918d.chunk.js",
+    "static/css/main.553f9731.chunk.css",
+    "static/js/main.908944e6.chunk.js"
+  ]
+}
