@@ -29,3 +29,11 @@ p {
 button {
   margin-left: 10px;
 }
+
+.resultsBox {
+  border: 1px solid black;
+  min-height: 50px;
+  text-align: left;
+  padding: 10px;
+  margin: 10px;
+}

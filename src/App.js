@@ -18,32 +18,112 @@ class App extends React.Component {
 
   // search functions
   stringToList = (str) => {
+    if (str === '') return [];
     let list = str.split(',');
     let listTrimmed = [];
     list.forEach(item => {
-        listTrimmed.push(item.trim());
+        listTrimmed.push(parseInt(item.trim()));
     });
 
     return listTrimmed;
   }
 
-  linearSearch = (listStr, keyStr) => {
-    let list = this.stringToList(listStr);
+  linearSearch = (list, keyStr) => {
     let i = 0;
     let key = parseInt(keyStr);
     let results = []
 
+    results.push(`List: ${list}`);
+    results.push(`Search: ${key}`);
+    results.push(`Results::`);
+
     for(i = 0; i < list.length; i++) {
-      let n = parseInt(list[i]);
+      let n = list[i];
       
       if (n === key) {
-        results = [...results, `Round ${i+1} ===> ${key} = ${n} found!!`]
+        results.push(`Round ${i+1} ===> ${key} = ${n} found!!`);
         break;
       } else {
-        results = [...results, `Round ${i+1} ===> ${key} != ${n}`]
+        results.push(`Round ${i+1} ===> ${key} != ${n}`);
       }
     }
 
+    this.setState({
+      results: results
+    });
+  }
+
+  binarySearch = (list, keyStr) => {
+
+    let results = [];
+    let round = 0;
+    let key = parseInt(keyStr);
+
+    results.push(`List: ${list}`);
+    results.push(`Search: ${key}`);
+    results.push(`Results::`);
+
+    let sortedList = [...list].sort((a,b)=>a-b);
+    results.push(`List Sorted: ${list} => ${sortedList}`);
+
+    let finished = false;
+    let start = 0;
+    let end = sortedList.length - 1;
+
+    while (!finished) {
+      round++;
+      let mid = Math.floor((start+end)/2);
+      if (sortedList[mid] === key) {
+        results.push(`Round ${round}: the middle number is ${sortedList[mid]} = ${key} found!!`);
+        finished = true;
+        break;
+      } else if (sortedList[mid] > key) {
+        results.push(`Round ${round}: the middle number is ${sortedList[mid]} > ${key}`);
+        let newEnd = mid - 1;
+        results.push(`Shorten search range: ${sortedList.slice(start,end+1)} => ${sortedList.slice(start,newEnd+1)}`);
+        end = newEnd;
+      } else if (sortedList[mid] < key) {
+        results.push(`Round ${round}: the middle number is ${sortedList[mid]} < ${key}`);
+        let newStart = mid + 1;
+        results.push(`Shorten search range: ${sortedList.slice(start,end+1)} => ${sortedList.slice(newStart,end+1)}`);
+        start = newStart;
+      }
+      if (round === 50) {
+        finished = true;
+        results.push('loop exceed limit of 50');
+        break;
+      }
+    }
+
+    this.setState({
+      results: results
+    });
+  }
+
+  bubbleSort = (list) => {
+    let len = list.length;
+    let results = [];
+    let listAfter = [...list];
+    let listBefore = [...list];
+    let round = 1;
+
+    results.push(`List: ${list}`);
+    results.push(`Results::`)
+
+    for (let i = 0; i < len; i++) {
+        for (let j = 0; j < len; j++) {
+            if (listAfter[j] > listAfter[j + 1]) {
+                let tmp = listAfter[j];
+                listAfter[j] = listAfter[j + 1];
+                listAfter[j + 1] = tmp;
+
+                results.push(`Round ${round++} swap the positions ${j}<->${j+1}: ${listBefore} => ${listAfter}`);
+                listBefore = listAfter;
+                listAfter = [...listBefore];
+            }
+        }
+    }
+    
     this.setState({
       results: results
     });
@@ -64,12 +144,31 @@ class App extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.linearSearch(this.state.listInput,this.state.keyInput);
+
+    let list = this.stringToList(this.state.listInput);
+
+    if (this.state.listInput === '') {
+      alert('Please fill list and keyword.');
+    }
+    else if (this.state.keyInput === '' && this.state.searchType !== 'bubble') {
+      alert('Please fill list and keyword.');
+    }
+    else if (this.state.searchType === 'linear') {
+      this.linearSearch(list,this.state.keyInput);
+    } 
+    else if (this.state.searchType === 'binary') {
+      this.binarySearch(list,this.state.keyInput);
+    } 
+    else if (this.state.searchType === 'bubble') {
+      this.bubbleSort(list);
+    }
   }
 
-  renderResults = (resultStr) => {
+
+  // render utilities functions
+  renderResults = (resultStr, index) => {
     return (
-      <p>{resultStr}</p>
+      <p key={index}>{resultStr}</p>
     );
   }
 
@@ -95,11 +194,14 @@ class App extends React.Component {
               <Select defaultValue="linear" style={{ width: 240 }} onChange={this.handleSelectChange}>
                 <Option value="linear">Linear Search</Option>
                 <Option value="binary">Binary Search</Option>
-                <Option value="bubble">Bubble Search</Option>
+                <Option value="bubble">Bubble Sort</Option>
               </Select>
             </span>
           </form>
-          {this.state.results.map(this.renderResults)}
+          <p>ผลลัพธ์</p>
+          <div className="resultsBox">
+            {this.state.results.map(this.renderResults)}
+          </div>
         </div>
       </div>
     );
